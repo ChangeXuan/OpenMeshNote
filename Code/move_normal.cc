@@ -8,8 +8,8 @@ typedef OpenMesh::TriMesh_ArrayKernelT<> MyMesh;
 
 int main(int argc, char **argv) {
 	MyMesh mesh;
-	if (argc!=2) {
-		std::cerr << "Usage: " << argv[0] << " <input>\n ";
+	if (argc!=3) {
+		std::cerr << "Usage: " << argv[0] << " <input> <input>\n ";
 		return 1;
 	}
 
@@ -39,11 +39,16 @@ int main(int argc, char **argv) {
 		std::cout << " moved to " << mesh.point(*v_it) << std::endl;
 	}
 
+	if (!OpenMesh::IO::write_mesh(mesh,argv[2])) {
+		return 1;
+	}
+
 	mesh.release_vertex_normals();
 
 	if (mesh.has_vertex_normals()) {
 		std::cerr << "Ouch! ERROR! Shouldn't have any vertex normals anymore!\n";
 		return 1;
 	}
+
 	return 0;
 }
